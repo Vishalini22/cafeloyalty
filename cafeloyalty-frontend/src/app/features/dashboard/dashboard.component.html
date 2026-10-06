@@ -1,0 +1,246 @@
+<div class="dashboard-layout">
+
+  <header class="dashboard-header">
+    <div class="brand-mini">
+      <svg class="cup-icon-mini" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M20 40 h50 v25 a25 25 0 0 1-25 25 h0 a25 25 0 0 1-25-25 Z" fill="none" stroke="currentColor"
+          stroke-width="4" />
+        <path d="M70 45 h8 a10 10 0 0 1 0 20 h-8" fill="none" stroke="currentColor" stroke-width="4" />
+      </svg>
+      <span class="brand-name-mini">CafeLoyalty</span>
+    </div>
+    <button class="btn-logout" (click)="logout()">Log out</button>
+  </header>
+
+  <main class="dashboard-content dashboard-content-wide">
+
+    <!-- Loading state -->
+    <div class="state-message" *ngIf="loading()">
+      <p>Loading your account…</p>
+    </div>
+
+    <!-- Error state -->
+    <div class="state-message state-error" *ngIf="!loading() && errorMessage()">
+      <p>{{ errorMessage() }}</p>
+      <button class="btn-retry" (click)="loadCustomer()">Try again</button>
+    </div>
+
+    <!-- Customer view -->
+    <ng-container *ngIf="!isAdmin() && !loading() && !errorMessage() && customer() as c">
+
+      <section class="loyalty-card">
+        <svg class="loyalty-illustration" viewBox="0 0 200 200" aria-hidden="true">
+          <path d="M40 70 h110 v55 a55 55 0 0 1-55 55 h0 a55 55 0 0 1-55-55 Z" fill="none" stroke="currentColor"
+            stroke-width="6" />
+          <path d="M150 85 h18 a22 22 0 0 1 0 44 h-18" fill="none" stroke="currentColor" stroke-width="6" />
+          <path d="M65 40 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+          <path d="M95 35 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+          <path d="M125 40 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+        </svg>
+
+        <div class="loyalty-identity">
+          <div>
+            <p class="greeting">Welcome back,</p>
+            <h1 class="customer-name">{{ c.name }}</h1>
+          </div>
+          <span class="tier-badge" [attr.data-tier]="c.tier">{{ tierInfo()?.label }}</span>
+        </div>
+
+        <div class="loyalty-divider"></div>
+
+        <div class="loyalty-stats">
+          <div class="points-block">
+            <span class="points-label">Points balance</span>
+            <span class="points-value">{{ c.pointsBalance }}</span>
+          </div>
+
+          <div class="points-block points-block-secondary">
+            <span class="points-label">Lifetime points</span>
+            <span class="points-value-secondary">{{ c.lifetimePoints }}</span>
+          </div>
+
+          <div class="loyalty-progress-block">
+            <div class="tier-progress" *ngIf="nextTierLabel() as nextTier">
+              <div class="tier-progress-track">
+                <div class="tier-progress-fill" [style.width.%]="progressPercent()"></div>
+              </div>
+              <p class="tier-progress-label">{{ pointsToNextTier() }} pts to {{ nextTier }}</p>
+            </div>
+            <div class="tier-progress tier-progress-maxed" *ngIf="!nextTierLabel()">
+              <p class="tier-progress-label">You've reached the top tier 🎉</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="customer-body">
+        <div class="customer-main-col">
+          <h2 class="section-heading">Quick actions</h2>
+          <div class="action-grid">
+            <a class="action-card" routerLink="/rewards">
+              <div class="action-icon-badge">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div class="action-text">
+                <span class="action-title">Browse Rewards</span>
+                <span class="action-desc">Redeem your points for menu items and perks</span>
+              </div>
+              <span class="action-arrow">→</span>
+            </a>
+
+            <a class="action-card" routerLink="/history">
+              <div class="action-icon-badge">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M9 8h6M9 12h6M9 16h3" stroke-linecap="round" />
+                </svg>
+              </div>
+              <div class="action-text">
+                <span class="action-title">Transaction History</span>
+                <span class="action-desc">See a record of your past visits</span>
+              </div>
+              <span class="action-arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+        <aside class="customer-side-col">
+          <h3 class="customer-side-heading">How it works</h3>
+          <p class="customer-side-subtext">Three simple steps to make the most of your visits.</p>
+
+          <div class="how-it-works-steps">
+            <div class="how-step">
+              <div class="how-step-marker">
+                <span class="how-step-number">1</span>
+              </div>
+              <div class="how-step-content">
+                <strong>Earn points</strong>
+                <span>1 point for every 100 LKR spent — added to your balance right after checkout.</span>
+              </div>
+            </div>
+
+            <div class="how-step">
+              <div class="how-step-marker">
+                <span class="how-step-number">2</span>
+              </div>
+              <div class="how-step-content">
+                <strong>Grow your tier</strong>
+                <span>Regular → Coffee Enthusiast → Coffee Connoisseur, based on your lifetime points.</span>
+              </div>
+            </div>
+
+            <div class="how-step">
+              <div class="how-step-marker">
+                <span class="how-step-number">3</span>
+              </div>
+              <div class="how-step-content">
+                <strong>Redeem rewards</strong>
+                <span>Use your points balance to claim items from the Rewards menu, any time.</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+    </ng-container>
+    <!-- Admin view -->
+    <ng-container *ngIf="isAdmin() && !loading()">
+      <section class="admin-hero">
+        <svg class="admin-hero-illustration" viewBox="0 0 200 200" aria-hidden="true">
+          <path d="M40 70 h110 v55 a55 55 0 0 1-55 55 h0 a55 55 0 0 1-55-55 Z" fill="none" stroke="currentColor"
+            stroke-width="6" />
+          <path d="M150 85 h18 a22 22 0 0 1 0 44 h-18" fill="none" stroke="currentColor" stroke-width="6" />
+          <path d="M65 40 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+          <path d="M95 35 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+          <path d="M125 40 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+        </svg>
+
+        <span class="admin-mode-badge">Admin mode</span>
+        <h1 class="admin-hero-title">Manage the café</h1>
+        <p class="admin-hero-subtext">Record customer purchases and keep the rewards menu up to date.</p>
+      </section>
+
+      <div class="admin-body">
+        <div class="admin-main-col">
+          <h2 class="section-heading">Quick actions</h2>
+          <div class="admin-grid">
+            <a class="admin-card" routerLink="/admin/record-transaction">
+              <div class="admin-icon-badge">
+                <svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M9 8h6M9 12h6M9 16h3" stroke-linecap="round" />
+                </svg>
+              </div>
+              <div class="admin-card-text">
+                <span class="admin-card-title">Record a Transaction</span>
+                <span class="admin-card-desc">Add a purchase for a customer and update their points
+                  automatically.</span>
+              </div>
+              <span class="admin-card-arrow">→</span>
+            </a>
+
+            <a class="admin-card" routerLink="/admin/create-reward">
+              <div class="admin-icon-badge">
+                <svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M20 12v9H4v-9M2 7h20v5H2zM12 7v14M12 7c0-1.5-1-3-3-3s-2 3 3 3zM12 7c0-1.5 1-3 3-3s2 3-3 3z"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div class="admin-card-text">
+                <span class="admin-card-title">Create a Reward</span>
+                <span class="admin-card-desc">Add a new item to the customer rewards menu.</span>
+              </div>
+              <span class="admin-card-arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+        <aside class="admin-side-col">
+          <h3 class="admin-side-heading">Guidelines</h3>
+          <ul class="admin-tip-list">
+            <li>
+              <div class="admin-tip-row">
+                <div class="admin-tip-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="9" stroke-linecap="round" />
+                    <path d="M12 8v4l3 2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <strong>Transactions</strong>
+              </div>
+              <span>1 point is awarded per 100 LKR spent. Points apply instantly to the customer's balance.</span>
+            </li>
+            <li>
+              <div class="admin-tip-row">
+                <div class="admin-tip-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <strong>Tiers</strong>
+              </div>
+              <span>Customers move up automatically: Regular → Coffee Enthusiast → Coffee Connoisseur, based on lifetime
+                points.</span>
+            </li>
+            <li>
+              <div class="admin-tip-row">
+                <div class="admin-tip-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M20 12v9H4v-9M2 7h20v5H2zM12 7v14" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <strong>Rewards</strong>
+              </div>
+              <span>New rewards appear on the customer app immediately after creation.</span>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </ng-container>
+
+  </main>
+</div>

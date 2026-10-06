@@ -1,0 +1,61 @@
+<div class="rewards-layout">
+
+  <header class="brand-header">
+    <div class="brand-mini">
+      <svg class="cup-icon-mini" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M20 40 h50 v25 a25 25 0 0 1-25 25 h0 a25 25 0 0 1-25-25 Z" fill="none" stroke="currentColor" stroke-width="4" />
+        <path d="M70 45 h8 a10 10 0 0 1 0 20 h-8" fill="none" stroke="currentColor" stroke-width="4" />
+      </svg>
+      <span class="brand-name-mini">CafeLoyalty</span>
+    </div>
+    <div class="brand-header-actions">
+      <button class="btn-logout" (click)="logout()">Log out</button>
+    </div>
+  </header>
+
+  <header class="rewards-header">
+    <div class="rewards-header-inner">
+      <div>
+        <h1 class="page-title">Transaction History</h1>
+        <p class="page-subtitle">Every visit, tracked</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="rewards-content">
+
+    <div class="state-message" *ngIf="loading()">
+      <p>Loading your history…</p>
+    </div>
+
+    <div class="state-message state-error" *ngIf="!loading() && errorMessage()">
+      <p>{{ errorMessage() }}</p>
+      <button class="btn-retry" (click)="loadData()">Try again</button>
+    </div>
+
+    <div class="menu-sheet" *ngIf="!loading() && !errorMessage() && transactions().length > 0">
+      <div class="menu-item" *ngFor="let tx of transactions()">
+        <div class="menu-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M9 8h6M9 12h6M9 16h3" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="menu-item-main">
+          <h3 class="menu-item-name">{{ tx.date | date:'MMM d, y' }}</h3>
+          <p class="menu-item-desc" *ngIf="tx.notes">{{ tx.notes }}</p>
+          <p class="menu-item-desc" *ngIf="!tx.notes">Purchase — LKR {{ tx.amount }}</p>
+        </div>
+        <div class="menu-item-leader"></div>
+        <div class="menu-item-right">
+          <span class="menu-item-cost">+{{ tx.pointsEarned }} pts</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="state-message" *ngIf="!loading() && !errorMessage() && transactions().length === 0">
+      <p>No transactions yet — your visits will show up here.</p>
+    </div>
+
+  </main>
+</div>

@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeLoyalty.Domain", "CafeLoyalty.Domain\CafeLoyalty.Domain.csproj", "{6242636A-6D0F-46FF-8616-170F7538EAB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeLoyalty.Application", "CafeLoyalty.Application\CafeLoyalty.Application.csproj", "{FBC7154B-04AF-4A30-B5D9-E6DF07842D08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeLoyalty.Infrastructure", "CafeLoyalty.Infrastructure\CafeLoyalty.Infrastructure.csproj", "{BFE312CB-5BB3-4426-863D-6C326B0D8325}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeLoyalty.API", "CafeLoyalty.API\CafeLoyalty.API.csproj", "{2BD8A3C6-55C1-4699-AFDF-68A5DB391A5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeLoyalty.Tests", "CafeLoyalty.Tests\CafeLoyalty.Tests.csproj", "{77BAF17E-A06F-4FE6-B1D2-D1EDAD7DFF78}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6242636A-6D0F-46FF-8616-170F7538EAB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6242636A-6D0F-46FF-8616-170F7538EAB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6242636A-6D0F-46FF-8616-170F7538EAB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6242636A-6D0F-46FF-8616-170F7538EAB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBC7154B-04AF-4A30-B5D9-E6DF07842D08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBC7154B-04AF-4A30-B5D9-E6DF07842D08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBC7154B-04AF-4A30-B5D9-E6DF07842D08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBC7154B-04AF-4A30-B5D9-E6DF07842D08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFE312CB-5BB3-4426-863D-6C326B0D8325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFE312CB-5BB3-4426-863D-6C326B0D8325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFE312CB-5BB3-4426-863D-6C326B0D8325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFE312CB-5BB3-4426-863D-6C326B0D8325}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BD8A3C6-55C1-4699-AFDF-68A5DB391A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BD8A3C6-55C1-4699-AFDF-68A5DB391A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BD8A3C6-55C1-4699-AFDF-68A5DB391A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BD8A3C6-55C1-4699-AFDF-68A5DB391A5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77BAF17E-A06F-4FE6-B1D2-D1EDAD7DFF78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77BAF17E-A06F-4FE6-B1D2-D1EDAD7DFF78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77BAF17E-A06F-4FE6-B1D2-D1EDAD7DFF78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77BAF17E-A06F-4FE6-B1D2-D1EDAD7DFF78}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,149 @@
+<div class="admin-page-layout">
+
+  <div class="toast" *ngIf="showToast()" [class.toast-visible]="showToast()">
+    <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
+    <div class="toast-text">
+      <span class="toast-title">Transaction recorded</span>
+      <span class="toast-sub">+{{ result()?.pointsEarned }} pts for {{ lastCustomerName() }}</span>
+    </div>
+  </div>
+
+  <header class="admin-page-header">
+    <div class="brand-mini">
+      <svg class="cup-icon-mini" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M20 40 h50 v25 a25 25 0 0 1-25 25 h0 a25 25 0 0 1-25-25 Z" fill="none" stroke="currentColor"
+          stroke-width="4" />
+        <path d="M70 45 h8 a10 10 0 0 1 0 20 h-8" fill="none" stroke="currentColor" stroke-width="4" />
+      </svg>
+      <span class="brand-name-mini">CafeLoyalty</span>
+    </div>
+    <button class="btn-logout" (click)="logout()">Log out</button>
+  </header>
+
+  <div class="admin-form-page">
+
+    <div class="admin-form-nav">
+      <a routerLink="/dashboard" class="back-link">← Back to Dashboard</a>
+    </div>
+
+    <section class="admin-form-hero">
+      <svg class="admin-form-hero-illustration" viewBox="0 0 200 200" aria-hidden="true">
+        <path d="M40 70 h110 v55 a55 55 0 0 1-55 55 h0 a55 55 0 0 1-55-55 Z" fill="none" stroke="currentColor"
+          stroke-width="6" />
+        <path d="M150 85 h18 a22 22 0 0 1 0 44 h-18" fill="none" stroke="currentColor" stroke-width="6" />
+        <path d="M65 40 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+        <path d="M95 35 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+        <path d="M125 40 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+      </svg>
+
+      <span class="admin-mode-badge">Admin mode</span>
+      <h1 class="admin-form-title">Record Transaction</h1>
+      <p class="admin-form-subtext">Add a purchase for a customer and update their points instantly.</p>
+    </section>
+
+    <div class="admin-form-body">
+
+      <div class="admin-form-col">
+        <div class="admin-form-card">
+          <p class="form-error" *ngIf="customersError()">{{ customersError() }}</p>
+
+          <form (ngSubmit)="submit()" class="admin-form">
+            <label class="form-field">
+              <span class="form-label">Customer</span>
+              <select [ngModel]="customerId()" (ngModelChange)="customerId.set($event)" name="customerId" required>
+                <option [ngValue]="null" disabled>Select a customer</option>
+                <option *ngFor="let c of customers()" [ngValue]="c.id">
+                  {{ c.name }} ({{ c.email }})
+                </option>
+              </select>
+            </label>
+
+            <label class="form-field">
+              <span class="form-label">Amount (LKR)</span>
+              <input type="number" [(ngModel)]="amount" name="amount" required min="1" placeholder="e.g. 1500" />
+            </label>
+
+            <label class="form-field">
+              <span class="form-label">Notes (optional)</span>
+              <input type="text" [(ngModel)]="notes" name="notes" placeholder="e.g. 2 cappuccinos, 1 croissant" />
+            </label>
+
+            <p class="form-error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+
+            <button type="submit" class="btn-submit" [disabled]="submitting()">
+              {{ submitting() ? 'Recording…' : 'Record Transaction' }}
+            </button>
+          </form>
+        </div>
+
+        <div class="result-card" *ngIf="result() as r">
+          <div class="result-header">
+            <svg class="result-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
+            <span>Recorded for {{ lastCustomerName() }}</span>
+          </div>
+          <div class="result-stats">
+            <div class="stat">
+              <span class="stat-value">+{{ r.pointsEarned }}</span>
+              <span class="stat-label">points earned</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">{{ r.newPointsBalance }}</span>
+              <span class="stat-label">new balance</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">{{ r.tier }}</span>
+              <span class="stat-label">tier <span *ngIf="r.tierChanged">🎉</span></span>
+            </div>
+          </div>
+          <p class="result-lifetime">Lifetime points: {{ r.newLifetimePoints }}</p>
+        </div>
+      </div>
+
+      <aside class="snapshot-card">
+        <ng-container *ngIf="selectedCustomer() as c; else noSelection">
+          <div class="snapshot-header" [ngClass]="tierClass(c.tier)">
+            <span class="snapshot-avatar">{{ tierEmoji(c.tier) }}</span>
+            <div>
+              <div class="snapshot-name">{{ c.name }}</div>
+              <div class="snapshot-email">{{ c.email }}</div>
+            </div>
+          </div>
+
+          <div class="snapshot-tier-badge" [ngClass]="tierClass(c.tier)">
+            {{ tierEmoji(c.tier) }} {{ c.tier }} tier
+          </div>
+
+          <div class="snapshot-stats">
+            <div class="snapshot-stat">
+              <span class="snapshot-stat-icon">⭐</span>
+              <span class="snapshot-stat-value">{{ c.pointsBalance }}</span>
+              <span class="snapshot-stat-label">current points</span>
+            </div>
+            <div class="snapshot-stat">
+              <span class="snapshot-stat-icon">🏆</span>
+              <span class="snapshot-stat-value">{{ c.lifetimePoints }}</span>
+              <span class="snapshot-stat-label">lifetime points</span>
+            </div>
+          </div>
+
+          <div class="snapshot-joined">
+            📅 Member since {{ c.joinDate | date:'MMM yyyy' }}
+          </div>
+        </ng-container>
+
+        <ng-template #noSelection>
+          <div class="snapshot-empty-state">
+            <span class="snapshot-empty-icon">☕</span>
+            <h2 class="snapshot-title">Customer snapshot</h2>
+            <p class="snapshot-empty">Pick a customer to see their points, tier and history right here.</p>
+          </div>
+        </ng-template>
+      </aside>
+
+    </div>
+  </div>
+</div>

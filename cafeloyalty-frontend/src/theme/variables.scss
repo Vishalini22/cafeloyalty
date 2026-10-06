@@ -1,0 +1,35 @@
+:root {
+  // Palette — CafeLoyalty
+  --cl-espresso: #2B1B14;
+  --cl-milk: #F7F1E8;
+  --cl-latte: #C08552;
+  --cl-cinnamon: #B8461F;
+  --cl-matcha: #4A7856;
+  --cl-taupe: #8B7355;
+
+  // Semantic aliases
+  --cl-bg: var(--cl-milk);
+  --cl-surface: #FFFFFF;
+  --cl-surface-alt: #FBF7F0;
+  --cl-text: var(--cl-espresso);
+  --cl-text-muted: var(--cl-taupe);
+  --cl-accent: var(--cl-cinnamon);
+  --cl-success: var(--cl-matcha);
+  --cl-border: #E6DCC8;
+
+  // Type
+  --cl-font-display: 'Fraunces', Georgia, serif;
+  --cl-font-body: 'Inter', -apple-system, sans-serif;
+  --cl-font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  // Spacing scale
+  --cl-space-xs: 4px;
+  --cl-space-sm: 8px;
+  --cl-space-md: 16px;
+  --cl-space-lg: 24px;
+  --cl-space-xl: 40px;
+
+  // Radius
+  --cl-radius: 12px;
+  --cl-radius-lg: 20px;
+}

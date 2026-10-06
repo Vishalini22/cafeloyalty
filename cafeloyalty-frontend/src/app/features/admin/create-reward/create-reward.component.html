@@ -1,0 +1,99 @@
+<div class="admin-page-layout">
+
+  <div class="toast toast-success" *ngIf="showToast()" [class.toast-visible]="showToast()">
+    <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
+    <div class="toast-text">
+      <span class="toast-title">Reward created</span>
+      <span class="toast-sub">{{ lastRewardName() }} is now live</span>
+    </div>
+  </div>
+
+  <header class="admin-page-header">
+    <div class="brand-mini">
+      <svg class="cup-icon-mini" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M20 40 h50 v25 a25 25 0 0 1-25 25 h0 a25 25 0 0 1-25-25 Z" fill="none" stroke="currentColor"
+          stroke-width="4" />
+        <path d="M70 45 h8 a10 10 0 0 1 0 20 h-8" fill="none" stroke="currentColor" stroke-width="4" />
+      </svg>
+      <span class="brand-name-mini">CafeLoyalty</span>
+    </div>
+    <button class="btn-logout" (click)="logout()">Log out</button>
+  </header>
+
+  <div class="admin-form-page">
+
+    <div class="admin-form-nav">
+      <a routerLink="/dashboard" class="back-link">← Back to Dashboard</a>
+    </div>
+
+    <section class="admin-form-hero">
+      <svg class="admin-form-hero-illustration" viewBox="0 0 200 200" aria-hidden="true">
+        <path d="M40 70 h110 v55 a55 55 0 0 1-55 55 h0 a55 55 0 0 1-55-55 Z" fill="none" stroke="currentColor"
+          stroke-width="6" />
+        <path d="M150 85 h18 a22 22 0 0 1 0 44 h-18" fill="none" stroke="currentColor" stroke-width="6" />
+        <path d="M65 40 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+        <path d="M95 35 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+        <path d="M125 40 q5 -15 15 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+      </svg>
+
+      <span class="admin-mode-badge">Admin mode</span>
+      <h1 class="admin-form-title">Record Transaction</h1>
+      <p class="admin-form-subtext">Add a purchase for a customer and update their points instantly.</p>
+    </section>
+
+    <div class="admin-form-body admin-form-body-single">
+
+      <div class="admin-form-col">
+        <div class="admin-form-card">
+          <form (ngSubmit)="submit()" class="admin-form">
+            <label class="form-field">
+              <span class="form-label">Reward name</span>
+              <input type="text" [(ngModel)]="name" name="name" required placeholder="e.g. Free Cappuccino" />
+            </label>
+
+            <label class="form-field">
+              <span class="form-label">Description</span>
+              <input type="text" [(ngModel)]="description" name="description" required
+                placeholder="e.g. Any size, any milk option" />
+            </label>
+
+            <label class="form-field">
+              <span class="form-label">Points cost</span>
+              <input type="number" [(ngModel)]="pointsCost" name="pointsCost" required min="1" placeholder="e.g. 100" />
+            </label>
+
+            <p class="form-error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+
+            <button type="submit" class="btn-submit" [disabled]="submitting()">
+              {{ submitting() ? 'Creating…' : 'Create Reward' }}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <aside class="recent-rewards-card">
+        <h2 class="snapshot-title">Recently added</h2>
+
+        <div *ngIf="loadingRewards()" class="recent-rewards-empty">Loading…</div>
+
+        <ul class="recent-rewards-list" *ngIf="!loadingRewards() && recentRewards().length > 0">
+          <li class="recent-reward-item" *ngFor="let r of recentRewards()">
+            <div class="recent-reward-icon">🎁</div>
+            <div class="recent-reward-info">
+              <div class="recent-reward-name">{{ r.name }}</div>
+              <div class="recent-reward-desc">{{ r.description }}</div>
+            </div>
+            <div class="recent-reward-cost">{{ r.pointsCost }} pts</div>
+          </li>
+        </ul>
+
+        <p class="recent-rewards-empty" *ngIf="!loadingRewards() && recentRewards().length === 0">
+          No rewards yet — create your first one above.
+        </p>
+      </aside>
+
+    </div>
+  </div>
+</div>
